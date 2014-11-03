@@ -1,0 +1,8 @@
+{
+  "name": "jubo-kit",
+  "version": "0.1.0",
+  "dependencies": {
+    "meteor": "1.0.0",
+    "demeteorizer": "2.0.4" 
+  }
+}
