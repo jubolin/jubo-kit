@@ -1,4 +1,21 @@
-#!/usr/bin/env node
+#!/bin/bash 
 
-require('./lib/jubo');
+ORIG_DIR="$(pwd)"
+SCRIPT="$0"
+while true; do
+  # The symlink might be relative, so we have to actually cd to the right place
+  # each time in order to resolve it.
+  cd "$(dirname "$SCRIPT")"
+  if [ ! -L "$(basename "$SCRIPT")" ]; then
+    WORK_DIR="$(pwd -P)"
+    break
+  fi
+  SCRIPT="$(readlink "$(basename "$SCRIPT")")"
+done
+
+cd "$ORIG_DIR"
+export JUBO_PATH=$WORK_DIR
+JUBO="$WORK_DIR/lib/jubo.js"
+exec "$WORK_DIR/devkit/meteor/dev_bundle/bin/node" "$JUBO" "$@" 
+#exec "/home/hoolev/WCode/jubo/devkit/meteor/meteor" "$@" 
 
