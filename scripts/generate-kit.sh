@@ -36,7 +36,7 @@ cd $DEVKIT_DIR
 # Prepare Demeteorizer
 git clone https://github.com/jubolin/demeteorizer.git
 cd demeteorizer
-git checkout v2.0.4
+git checkout jubo-devel 
 npm install
 cd $DEVKIT_DIR
 

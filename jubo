@@ -14,8 +14,7 @@ while true; do
 done
 
 cd "$ORIG_DIR"
-export JUBO_PATH=$WORK_DIR
+export JUBO_PATH="$WORK_DIR/devkit"
 JUBO="$WORK_DIR/lib/jubo.js"
 exec "$WORK_DIR/devkit/meteor/dev_bundle/bin/node" "$JUBO" "$@" 
-#exec "/home/hoolev/WCode/jubo/devkit/meteor/meteor" "$@" 
 
