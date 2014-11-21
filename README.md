@@ -1,7 +1,7 @@
 JuBo
 ====
 
-JuBo is an ultra-simple environment for building OpenWrt APP.
+**JuBo is an ultra-simple environment for building OpenWrt APP.**
 
 ## 安装JuBo
 
@@ -26,7 +26,8 @@ jubo
 ## 发布应用到OpenWrt设备
 `jubo deploy openwrt-dev-addr`
 
-*OpenWrt设备的内存和存储空间应不少于64MB*
+**OpenWrt设备的内存和存储空间应不少于64MB**
+
 发布成功后，访问http://openwrt-dev-addr:22786 就可以看到应用了。
 
 ## 开发资源
