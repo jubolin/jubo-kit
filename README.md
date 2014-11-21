@@ -5,21 +5,21 @@ JuBo is an ultra-simple environment for building OpenWrt APP.
 
 ## 安装JuBo
 
-{% highlight sh%>
+```
 git clone https://github.com/jubolin/jubo.git
 cd jubo
 ./scripts/generat-kit.sh
-{% endhighlight %>
+```
 
 ## 创建应用
 `jubo create first-app`
 
 ## 运行应用
 
-{% highlight sh%>
+```
 cd first-app
 jubo
-{% endhighlight %>
+```
 
 打开浏览器访问http://localhost:3000 就可以看到应用了。
 
