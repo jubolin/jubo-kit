@@ -4,21 +4,27 @@ JuBo
 JuBo is an ultra-simple environment for building OpenWrt APP.
 
 ## 安装JuBo
+
+{% highlight sh%>
 git clone https://github.com/jubolin/jubo.git
 cd jubo
 ./scripts/generat-kit.sh
+{% endhighlight %>
 
 ## 创建应用
-jubo create first-app
+`jubo create first-app`
 
 ## 运行应用
+
+{% highlight sh%>
 cd first-app
 jubo
+{% endhighlight %>
 
 打开浏览器访问http://localhost:3000 就可以看到应用了。
 
 ## 发布应用到OpenWrt设备
-jubo deploy openwrt-dev-addr
+`jubo deploy openwrt-dev-addr`
 
 *OpenWrt设备的内存和存储空间应不少于64MB*
 发布成功后，访问http://openwrt-dev-addr:22786 就可以看到应用了。
