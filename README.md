@@ -28,7 +28,7 @@ JuBo是在Meteor(https://www.meteor.com) 的基础上开发的，Meteor的开发
 
 ## 联系我们
 
-Email: jubolin@126.com
+EMail: jubolin@126.com
 
 
 
