@@ -40,6 +40,14 @@ git checkout jubo-devel
 npm install
 cd $DEVKIT_DIR
 
+# Prepare ssh2
+mkdir -p node_modules
+git clone https://github.com/mscdex/ssh2.git
+cd ssh2
+git checkout v0.3.6
+npm install
+cd $DEVKIT_DIR
+
 # Prepare native module
 # Prepare AllJoyn
 # Prepare Qemu
