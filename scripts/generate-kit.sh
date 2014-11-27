@@ -42,6 +42,7 @@ cd $DEVKIT_DIR
 
 # Prepare ssh2
 mkdir -p node_modules
+cd node_modules
 git clone https://github.com/mscdex/ssh2.git
 cd ssh2
 git checkout v0.3.6
