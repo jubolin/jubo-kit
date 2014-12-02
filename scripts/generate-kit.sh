@@ -40,7 +40,7 @@ git checkout jubo-devel
 npm install
 cd $DEVKIT_DIR
 
-# Prepare ssh2
+# Prepare node modules 
 cd "../$DEVKIT_DIR"
 mkdir -p node_modules
 cd node_modules
@@ -52,12 +52,8 @@ cd -
 npm install underscore
 cd $DEVKIT_DIR
 
-#Prepare node modules 
-s
-s
-
+# Prepare jubo binary lib
 wget -c -O jubo-r0.1.0.tar.gz "http://121.14.247.123/share.php?method=Share.download&cqid=3f5b32c8fc1f734825f6f401b9599ee3&dt=63.50073adcc69132c815acc7b7ca6db56e&e=1417501943&fhash=b359339baf0f9698468c7d21c77312cebe7e2f43&fname=jubo-r0.1.0.tar.gz&fsize=3657527&nid=14173283704959675&scid=63&st=cb7b7a81e6771acb3a6ccad9ed22b026&xqid=1346557514" 
-
 
 # Prepare native module
 # Prepare AllJoyn
