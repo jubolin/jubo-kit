@@ -47,5 +47,11 @@ IoT.Home.prototype.getDevice = function(location) {
   });
 };
 
-
+Meteor.methods({
+  createHomeSlice: function(name) {
+    Meteor.publish('jubo_iot_home_sclice_' + name,function(name) {
+      return IoT.Home.properties.find({'authorized':name});
+    });
+  }
+});
 
