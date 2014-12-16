@@ -5,8 +5,9 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-//  api.versionsFrom('1.0.1');
-  api.addFiles('jubo-iot.js');
+  Npm.depends({alljoyn: "0.1.3"});
+  api.addFiles('iot.js');
+  api.addFiles('iot-slice.js');
 });
 
 Package.onTest(function(api) {
