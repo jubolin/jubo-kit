@@ -34,23 +34,16 @@ IoT.Home.prototype.addDevice = function(device,callback) {
 };
 
 IoT.Home.prototype.getDevice = function(location) {
-  var device = {};
-  IoT.Home.devices.findOne({"location":location},function(err,dev) {
-    console.log('get device[' + location + ']' + err?'failed':'successed.');
-    if(!err) {
-      device = dev;
-      IoT.Home.properties.find({'device':location}).toArray(function(err,properties) {
-        console.log('get device[' + location + ']' + '\'s properties' + err?'failed':'successed.');
-        device.properties = properties;
-      });
-    }
-  });
+  var device = IoT.Home.devices.findOne({"location":location});
+  device.properties = IoT.Home.properties.find({'device':location}).fetch();
+  console.log('get device ',device);
+  return device;
 };
 
 Meteor.methods({
   createHomeSlice: function(name) {
     Meteor.publish('jubo_iot_home_sclice_' + name,function(name) {
-      return IoT.Home.properties.find({'authorized':name});
+      return IoT.Home.properties.find({authorized:name},{fields: {'authorized': 0}});
     });
   }
 });

@@ -5,7 +5,7 @@ IoT.Slice = function(name) {
 
   this.name = name;
   this.scene = {};
-  this.connection = DDP.connect(HOME_URL);
+  this.connection = DDP.connect(process.env.JUBO_IOT_HOME_URL);
   this.properties = new Mongo.Collection('jubo_iot_home');
   this.connection.call('createHomeSlice',name);
   this.slice = this.connection.subscribe('jubo_iot_home_slice_' + name,name);
@@ -22,13 +22,9 @@ IoT.Slice.prototype.adjust = function(device,service,property,value) {
 };
 
 IoT.Slice.prototype.property = function(device,service,property) {
-  var self = this;
-
-  var query = {'device':device,'service':service,'property':property};
-  self.properties.findOne(query,function(err,data) {
-    console.log('find ' + query + err?'failed':'successed');
-    return data;
-  });
+  console.log('get %s.%s property %s.'device,service,property);
+  return self.properties.findOne({'device':device,'service':service,'property':property},
+                                 {fields:{'property': 1,'value': 1}});
 };
 
 
