@@ -14,22 +14,21 @@ IoT.Home = function(name) {
   this.devices = new Mongo.Collection('jubo_iot_home_devices');
 };
 
-IoT.Home.prototype.addDevice = function(device,callback) {
+IoT.Home.prototype.addDevice = function(device,properties,callback) {
   var self = this;
 
-  self.devices.insert(device,{w:1},function(err,result) {
+  self.devices.insert(device,function(err,result) {
     if(err) return callback(err);
 
     console.log('iot add device: ',device);
-    var dev = JSON.parse(device);
-    var sence = {"devid": dev.id,"service": {}};
+    // export device methods
+    Meteor.methods(device.methods);
 
-    for(serv in dev.service) {
-      sence.service[serv] = dev.service[serv];
-      self.properties.insert(sence,{w:1},function(err,result) {
-        console.log('iot add sence %s : ',err?'Error':'Successed',sence);
+    _.each(properties,function(property) {
+      self.properties.insert(property,function(err,result) {
+        console.log('iot add property %s : ',err?'Error':'Successed',property);
       });
-    }
+    });
   });
 };
 
