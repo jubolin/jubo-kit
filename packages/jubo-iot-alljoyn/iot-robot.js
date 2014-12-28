@@ -1,36 +1,14 @@
-IoT.Robot = function(device) {
-  if (! (this instanceof IoT.Robot))
-    // called without `new`
-    return new IoT.Robot(location);
+IoT.Alljoyn.Robot = {};
 
-  var self = this;
-  self.device = device;
-};
-
-IoT.Robot.prototype.methods = function() {
+IoT.Alljoyn.Robot.methods = function(prefix) {
   var methods = {};
 
-  methods[self.device.methodPrefix + 'Talk'] = function(brightness) {
+  methods[prefix + 'Talk'] = function() {
   };
 
-  methods[self.device.methodPrefix + 'WalkFoward'] = function(length) {
+  methods[prefix + 'WalkFoward'] = function() {
   };
 
-  Meteor.methods(methods);
-}
-
-/*
-IoT.Robot.prototype.property = function(slice,device,service,property) {
-  console.log('get %s.%s property %s.'device,service,property);
-  return self.slice.properties.findOne({'device':device,'service':service,'property':property},
-                                 {fields:{'property': 1,'value': 1}});
+  return methods;
 };
-
-Meteor.methods({
-  robotWalk: function(location,direction,length) {
-    // walk
-
-  },
-});
-*/
 
