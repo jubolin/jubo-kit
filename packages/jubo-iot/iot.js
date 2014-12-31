@@ -10,26 +10,37 @@ IoT.Home = function(name) {
     // called without `new`
     return new IoT.Home(name);
 
-  this.properties = new Mongo.Collection('jubo_iot_home');
+  this.properties = new Mongo.Collection('jubo_iot_home_properties');
   this.devices = new Mongo.Collection('jubo_iot_home_devices');
 };
 
 IoT.Home.prototype.addDevice = function(device,properties,callback) {
   var self = this;
+  var dev = {
+    location: 'Home'
+    type: device.type,
+    devid: device.devid,
+    connector: device.connector,
+  };
 
-  self.devices.insert(device,function(err,result) {
+  self.devices.insert(dev,function(err,result) {
     if(err) return callback(err);
 
-    console.log('iot add device: ',device);
+    console.log('iot add device: ',dev);
     // export device methods
     Meteor.methods(device.methods);
 
-    _.each(properties,function(property) {
+    _.each(device.properties,function(property) {
       self.properties.insert(property,function(err,result) {
         console.log('iot add property %s : ',err?'Error':'Successed',property);
       });
     });
   });
+};
+
+IoT.Home.prototype.installDevice = function(device,location) {
+  self.devices.update({devid:devid},{$set:{'location': location}});
+  self.proeprties.update({devid:devid},{$set:{'location': location}},{multi:true});
 };
 
 IoT.Home.prototype.getDevice = function(location) {

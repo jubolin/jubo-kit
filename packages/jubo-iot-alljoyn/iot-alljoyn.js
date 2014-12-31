@@ -11,9 +11,35 @@ IoT.Alljoyn.stop() = function() {
   IoT.Alljoyn.bus.join();
 };
 
-IoT.Alljoyn.createDevice = function() {
-  var device = {};
+IoT.Alljoyn.ObserveAbout() = function() {
+  var listener = function(frombus,version,port,objectDescription,aboutData) {
+    var driver;
+    var dev = {};
+    var options = {};
+    var sessionListener = 0; //TODO: add sessionListener 
+    var aboutObject = alljoyn.AboutObjectDescription(objectDescription);
+    var sessionID = IoT.Alljoyn.bus.joinSession(frombus,port,sessionListener);
 
-   device.methods = IoT.Alljoyn[deviceType].methods(device.);
-   return device;
+    options.aboutObject = aboutObject;
+    dev.devid = Iot.Home.getUUID();
+    dev.aboutData = alljoyn.AboutData(aboutData);
+    dev.driverID = IoT.Home.findDriver(dev.aboutData);
+
+    _.each(aboutObject.getPaths(),function(path) {
+      _.each(aboutObject.getInterfaces(path),function(ifname)) {
+        options.paths[ifname] = path;
+      }
+       
+      options.proxyObject[path] = alljoyn.ProxyBusObject(IoT.Alljoyn.bus,frombus,path,sessionID);   
+    });
+
+    driver = IoT.Alljoyn.Driver[dev.driverID](dev.devid,IoT.Alljoyn.Connection(options));
+    dev.methods = driver.methods();
+    dev.properties = driver.properties();
+    IoT.Home.addDevice(dev);
+  };
+
+  IoT.Alljoyn.bus.registerAboutListener(listener);
 };
+
+

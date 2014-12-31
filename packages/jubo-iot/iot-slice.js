@@ -19,7 +19,7 @@ IoT.Slice.prototype.adjust = function(device,service,property,value) {
   if(sence) {
     console.log('adjust ',sence);
     // apply action
-    self.connection.call(sence.method,value);
+    self.connection.call(sence.devid + service + sence.method,value);
     // emit event
     self.proeprties.update(query,{$set:{'value': value}});
   } else {
