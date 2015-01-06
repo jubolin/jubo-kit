@@ -8,7 +8,7 @@ JuBo
 ```
 git clone https://github.com/jubolin/jubo.git
 cd jubo
-./scripts/generat-kit.sh
+./scripts/generate-kit.sh
 ```
 
 ## 创建应用
@@ -33,7 +33,7 @@ jubo
 ## 开发资源
 JuBo是在Meteor(https://www.meteor.com) 的基础上开发的，Meteor的开发资源都可以应用在JuBo上。
 
-## 联系我们
+## 加入我们
 
 EMail: jubolin@126.com
 
