@@ -5,13 +5,15 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  Npm.depends({alljoyn: "0.1.3"});
+  api.use('mongo', ['client', 'server']);
   api.addFiles('iot.js');
   api.addFiles('iot-slice.js');
+  api.export('IoT');
 });
 
 Package.onTest(function(api) {
   api.use('tinytest');
+  api.use('test-helpers');
   api.use('jubo-iot');
-  api.addFiles('jubo-iot-tests.js');
+  api.addFiles('jubo-iot-tests.js','server');
 });

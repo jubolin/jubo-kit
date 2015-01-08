@@ -16,7 +16,7 @@ IoT.Alljoyn.Robot.methods = function() {
   var self = this;
   var methods = {};
 
-  methods[self.prefix + 'Speak'] = function(words) {
+  methods[self.prefix + 'Words' + 'Speak'] = function(words) {
     var proxyObject = self.connection.getProxyObject('com.jubolin.iot.robot');
     proxyObject.methodCall('com.jubolin.iot.robot','speak',words,1);
   };
@@ -26,7 +26,7 @@ IoT.Alljoyn.Robot.methods = function() {
     proxyObject.methodCall('com.jubolin.iot.robot.mobility','walk',distance,1,reply);
   };
 
-  methods[self.prefix + 'Lighting' + 'ToggleSwitch'] = function(state) {
+  methods[self.prefix + 'Lighting' + 'LightState' + 'ToggleSwitch'] = function(state) {
     var proxyObject = self.connection.getProxyObject('com.jubolin.iot.robot.lighting');
     proxyObject.methodCall('com.jubolin.iot.robot.lighting','ToggleSwitch',state,1,reply);
   };
