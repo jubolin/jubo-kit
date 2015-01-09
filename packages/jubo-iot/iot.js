@@ -5,6 +5,8 @@
 
 IoT = {};
 IoT.Home = {};
+IoT.Drivers = {};
+IoT.Connectors = {};
 
 IoT.Home.properties = new Mongo.Collection('jubo_iot_home_properties');
 IoT.Home.devices = new Mongo.Collection('jubo_iot_home_devices');
@@ -20,16 +22,13 @@ var addDeviceAsync = function(device,cb) {
   IoT.Home.devices.insert(dev,function(err,result) {
     if(err) return cb(err);
 
-    console.log('iot add device: ',dev);
-    // export device methods
-    console.log('export methods',device.methods);
+    console.log('export methods:\n',device.methods);
     Meteor.methods(device.methods);
 
     _.each(device.properties,function(property) {
-      //property.authorized = [];
       IoT.Home.properties.insert(property,function(err,result) {
         if(err) return cb(err);
-        console.log('iot add property ', property);
+        console.log('add property:\n', property);
       });
     });
   });
@@ -58,18 +57,32 @@ IoT.Home.authorize = function(app,locations) {
     // ToDo 细粒度的权限控制
     IoT.Home.properties.allow({
       update: function(userId,doc) {
-        console.log('allow user id',userId,doc);
         return true;
       }
     });
   });
 };
 
+IoT.Home.findDriver = function(connector,about) {
+  var findedDriver;
+  _.each(IoT.Drivers[connector],function(driver) {
+    if(driver.probe(about)){
+      findedDriver = driver;
+    }
+  });
+
+  return findedDriver;
+};
+
+
+IoT.Home.uuid = function() {
+  return Random.id();
+}
+
 Meteor.methods({
   createHomeSlice: function(name) {
     console.log('crate home slice',name);
     Meteor.publish('jubo_iot_home_slice_' + name,function(name) {
-      var self = this;
       return IoT.Home.properties.find({'authorized':name},{fields: {'authorized': 0}});
     });
   },

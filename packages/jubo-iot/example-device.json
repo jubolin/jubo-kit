@@ -3,6 +3,7 @@
   "type": "bulb",
   "devid": "xxxx-xxx-xxxx",         // 由IoT生成，设备的唯一标识ID
   "connector": "alljoyn",           // 设备使用的IoT框架协议
+  "about": {},                      // 设备信息
   "location": "home.kitchen/bulb",  // 设备所在的位置，相同的位置只能有一个设备
   "service": {                      // 设备提供的服务，一台设备可以提供多种服务
     "lighting": {
@@ -16,7 +17,7 @@
       }
   },
   "methods": {                        // 设备的所有属性方法实现 
-    // 方法名由location + service + property + method组成
-    'homeKitchenBulbLightingLightStateToggleSwitch' : function(){}
+    // 方法名由devid + service + property + method组成
+    'xxxx-xxx-xxxLightingLightStateToggleSwitch' : function(){}
   }
 }

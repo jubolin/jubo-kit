@@ -5,8 +5,11 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
+  api.use('random');
   api.use('mongo', ['client', 'server']);
   api.addFiles('iot.js');
+  api.addFiles('./connectors/iot-alljoyn.js');
+  api.addFiles('./drivers/iot-robot.js');
   api.addFiles('iot-slice.js');
   api.export('IoT');
 });
