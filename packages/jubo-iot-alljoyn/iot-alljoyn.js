@@ -23,7 +23,7 @@ IoT.Alljoyn.ObserveAbout() = function() {
     options.aboutObject = aboutObject;
     dev.devid = Iot.Home.getUUID();
     dev.aboutData = alljoyn.AboutData(aboutData);
-    dev.driverID = IoT.Home.findDriver(dev.aboutData);
+    dev.driverID = IoT.Home.findDriver('alljoyn',dev.aboutData);
 
     _.each(aboutObject.getPaths(),function(path) {
       _.each(aboutObject.getInterfaces(path),function(ifname)) {

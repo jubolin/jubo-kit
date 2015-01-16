@@ -8,7 +8,14 @@ Robot.probe = function(about) {
 };
 
 Robot.init = function() {
+
   IoT.Connectors.Alljoyn.registerDriver(Robot);
+};
+
+Robot.notificationHandler = function(notification) {
+};
+
+Robot.observe = function() {
 };
 
 Robot.methods = function(devid,connection) {

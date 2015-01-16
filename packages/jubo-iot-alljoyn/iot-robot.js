@@ -10,7 +10,11 @@ IoT.Alljoyn.Robot = funtcion(devid,connection){
 };
 
 IoT.Alljoyn.Robot.probe = function(about) {
-}
+};
+
+IoT.Alljoyn.Robot.init = function() {
+  IoT.Alljoyn
+};
 
 IoT.Alljoyn.Robot.methods = function() {
   var self = this;

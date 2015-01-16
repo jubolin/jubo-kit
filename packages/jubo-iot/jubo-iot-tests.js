@@ -33,27 +33,27 @@ Tinytest.add('jubo-iot - iot-home - addDevice', function (test) {
     method: 'Speak'
   };
 
-  IoT.Home.devices.remove({});
-  IoT.Home.properties.remove({});
+  IoT.Device.devices.remove({});
+  IoT.Device.properties.remove({});
 
-  IoT.Home.addDevice(device);
-  var devs = IoT.Home.devices.find({devid:id}).fetch();
-  var properties = IoT.Home.properties.find({devid:id}).fetch();
+  IoT.Device.add(device);
+  var devs = IoT.Device.devices.find({devid:id}).fetch();
+  var properties = IoT.Device.properties.find({devid:id}).fetch();
   test.length(devs,1);
   test.length(properties,2);
   test.equal(devs[0].location,'Home');
 
   IoT.Home.installDevice(id,location);
-  devs = IoT.Home.devices.find({devid:id}).fetch();
+  devs = IoT.Device.devices.find({devid:id}).fetch();
   test.equal(devs[0].location,location);
 
   IoT.Home.authorize('iotest',[location]);
-  var property = IoT.Home.properties.findOne({'location':location,'service':'Lighting'});
+  var property = IoT.Device.properties.findOne({'location':location,'service':'Lighting'});
   test.equal(property.authorized,['iotest']);
-  property = IoT.Home.properties.findOne({'location':location,'service':''});
+  property = IoT.Device.properties.findOne({'location':location,'service':''});
   test.equal(property.authorized,['iotest']);
 
-  var slice = new IoT.Slice('iotest');
+  var slice = new IoT.Home.Slice('iotest');
   var property = slice.property(location,'Lighting','LightState');
   test.equal(property.value,'off');
   slice.adjust('home.kitchen/bulb','Lighting','LightState','on');
@@ -76,6 +76,18 @@ Robot.probe = function(about) {
 
 Robot.init = function() {
   IoT.Connectors.Alljoyn.registerDriver(Robot);
+};
+
+Robot.handler = function(notification) {
+  console.log('robot handle notification');
+  var property = [{
+    'devid':notification.getDeviceID(),
+    'service': 'Lighting',
+    'property': 'LightState',
+    'value': 'on'
+  }];
+
+  return property;
 };
 
 Robot.methods = function(devid,connection) {
@@ -127,56 +139,55 @@ var createDevice = function() {
     var connection = {proxyObject:{name:'org.alljoyn.robot',port:22786}};
     
     dev.about = {name:'test'};
-    dev.devid = IoT.Home.uuid();
-    driver = IoT.Home.findDriver('Alljoyn',dev.about)
+    dev.devid = IoT.uuid();
+    driver = IoT.Driver.match('alljoyn',dev.about)
     console.log('get driver:',driver.id);
     dev.type = driver.type;
     dev.connector = driver.connector;
     dev.methods = driver.methods(dev.devid,connection);
     dev.properties = driver.properties(dev.devid);
-    IoT.Home.addDevice(dev);
+    IoT.Device.add(dev);
 };
 
 Tinytest.add('jubo-iot - iot-home - addDriver', function (test) {
-  
   var location = 'home.robot';
   var location2 = 'home.kitchen';
   var name = 'drvtest';
   var id = 'J83c06771-c725-48c2-b1ff-6a2a59d445b8';
 
-  IoT.Home.devices.remove({});
-  IoT.Home.properties.remove({});
+  IoT.Device.devices.remove({});
+  IoT.Device.properties.remove({});
   createDevice();
   createDevice();
 
-  devices = IoT.Home.devices.find().fetch();
+  devices = IoT.Device.devices.find().fetch();
   test.length(devices,2);
 
   id = devices[0].devid;
   IoT.Home.installDevice(id,location);
-  devs = IoT.Home.devices.find({devid:id}).fetch();
+  devs = IoT.Device.devices.find({devid:id}).fetch();
   test.equal(devs[0].location,location);
 
   IoT.Home.authorize(name,[location]);
-  var property = IoT.Home.properties.findOne({'location':location,'service':'Lighting'});
+  var property = IoT.Device.properties.findOne({'location':location,'service':'Lighting'});
   test.equal(property.authorized,[name]);
-  property = IoT.Home.properties.findOne({'location':location,'service':''});
+  property = IoT.Device.properties.findOne({'location':location,'service':''});
   test.equal(property.authorized,[name]);
 
-  var slice = new IoT.Slice(name);
+  var slice = new IoT.Home.Slice(name);
   slice.adjust(location,'','Words','Hello World');
   property = slice.property(location,'','Words');
   test.equal(property.value,'Hello World');
 
   id = devices[1].devid;
   IoT.Home.installDevice(id,location2);
-  devs = IoT.Home.devices.find({devid:id}).fetch();
+  devs = IoT.Device.devices.find({devid:id}).fetch();
   test.equal(devs[0].location,location2);
 
   IoT.Home.authorize(name,[location2]);
-  var property = IoT.Home.properties.findOne({'location':location2,'service':'Lighting'});
+  var property = IoT.Device.properties.findOne({'location':location2,'service':'Lighting'});
   test.equal(property.authorized,[name]);
-  property = IoT.Home.properties.findOne({'location':location2,'service':''});
+  property = IoT.Device.properties.findOne({'location':location2,'service':''});
   test.equal(property.authorized,[name]);
 
   slice.adjust(location2,'','Words','Hello World');
@@ -184,4 +195,48 @@ Tinytest.add('jubo-iot - iot-home - addDriver', function (test) {
   test.equal(property.value,'Hello World');
 });
 
+Tinytest.add('jubo-iot - iot-home - handleNotification', function (test) {
+  var location = 'home.robot';
+  var location2 = 'home.kitchen';
+  var name = 'ntftest';
+  var id = 'J83c06771-c725-48c2-b1ff-6a2a59d445b8';
 
+  IoT.Device.devices.remove({});
+  IoT.Device.properties.remove({});
+  createDevice();
+
+  var devices = IoT.Device.devices.find().fetch();
+  id = devices[0].devid;
+  IoT.Home.installDevice(id,location);
+  devs = IoT.Device.devices.find({devid:id}).fetch();
+  test.equal(devs[0].location,location);
+
+  IoT.Home.authorize(name,[location]);
+  var property = IoT.Device.properties.findOne({'location':location,'service':'Lighting'});
+  test.equal(property.authorized,[name]);
+  property = IoT.Device.properties.findOne({'location':location,'service':''});
+  test.equal(property.authorized,[name]);
+
+  var slice = new IoT.Home.Slice(name);
+  slice.adjust(location,'','Words','Hello World');
+  property = slice.property(location,'','Words');
+  test.equal(property.value,'Hello World');
+
+  var notification = {};
+  notification.getDeviceID = function() {
+    return id;
+  };
+  IoT.NotificationCenter.registerHandler(id,Robot.handler);
+  IoT.NotificationCenter.handle('alljoyn',notification);
+  var sleepAsync = function(delay,cb) {
+    Meteor.setTimeout(function(){
+      console.log('sleep %d ms',delay);
+      cb && cb();
+    },delay);
+  };
+
+  var sleep = Meteor.wrapAsync(sleepAsync);
+  sleep(100);
+  property = slice.property(location,'Lighting','LightState');
+  test.equal(property.value,'on');
+});

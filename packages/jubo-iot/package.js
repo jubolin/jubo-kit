@@ -7,10 +7,10 @@ Package.describe({
 Package.onUse(function(api) {
   api.use('random');
   api.use('mongo', ['client', 'server']);
-  api.addFiles('iot.js');
-  api.addFiles('./connectors/iot-alljoyn.js');
+  api.addFiles('iot.js',['server','client']);
+  api.addFiles('./connectors/iot-alljoyn.js','server');
   api.addFiles('./drivers/iot-robot.js');
-  api.addFiles('iot-slice.js');
+  api.addFiles('iot-slice.js',['client','server']);
   api.export('IoT');
 });
 
@@ -19,4 +19,5 @@ Package.onTest(function(api) {
   api.use('test-helpers');
   api.use('jubo-iot');
   api.addFiles('jubo-iot-tests.js','server');
+  //api.addFiles('jubo-home-slice-tests.js','client');
 });

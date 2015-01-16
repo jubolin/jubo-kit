@@ -6,10 +6,11 @@ var subscribeAsync = function(connection,name,cb) {
 
 var subscribe = Meteor.wrapAsync(subscribeAsync);
 
-IoT.Slice = function(name) {
-  if (! (this instanceof IoT.Slice))
+IoT.Home.Slice = function(name) {
+  console.log('+++++++++++++++++++++++');
+  if (! (this instanceof IoT.Home.Slice))
     // called without `new`
-    return new IoT.Slice(name);
+    return new IoT.Home.Slice(name);
 
 
   this.name = name;
@@ -17,12 +18,12 @@ IoT.Slice = function(name) {
   this.connection = DDP.connect(process.env.JUBO_IOT_HOME_URL);
   this.connection.call('createHomeSlice',name);
   console.log('connection status:',this.connection.status());
-  this.properties = new Mongo.Collection('jubo_iot_home_properties',this.connection);
+  this.properties = new Mongo.Collection('jubo_iot_properties',this.connection);
 };
 
 
 
-IoT.Slice.prototype.adjust= function(location,service,property,value) {
+IoT.Home.Slice.prototype.adjust= function(location,service,property,value) {
   var self = this;
 
   var slice = subscribe(self.connection,self.name);
@@ -37,7 +38,7 @@ IoT.Slice.prototype.adjust= function(location,service,property,value) {
   }
 };
 
-IoT.Slice.prototype.property = function(location,service,property,cb) {
+IoT.Home.Slice.prototype.property = function(location,service,property,cb) {
   var self = this;
   var slice = subscribe(self.connection,self.name);
 
@@ -46,7 +47,14 @@ IoT.Slice.prototype.property = function(location,service,property,cb) {
                                  {fields:{'property': 1,'value': 1}});
 };
 
-IoT.Slice.prototype.requestAuthorization = function(locations) {
+IoT.Home.Slice.prototype.sence = function(f) {
+  var self = this;
+  var c = Tracker.autorun(function senceAutorun(c) { 
+    return f.call(self, c);
+  });
+};
+
+IoT.Home.Slice.prototype.requestAuthorization = function(locations) {
   var self = this;
   self.connection.call('requestAuthorization',self.name,locations);
 };
