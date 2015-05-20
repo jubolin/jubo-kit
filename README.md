@@ -1,13 +1,13 @@
-JuBo
+jubo-kit
 ====
 
-**JuBo is an ultra-simple environment for building OpenWrt APP.**
+**jubo-kit is an ultra-simple environment for building OpenWrt APP.**
 
 ## 安装JuBo
 
 ```
-git clone https://github.com/jubolin/jubo.git
-cd jubo
+git clone https://github.com/jubolin/jubo-kit.git
+cd jubo-kit
 ./scripts/generate-kit.sh
 ```
 
@@ -31,7 +31,7 @@ jubo
 发布成功后，访问http://openwrt-dev-addr:22786 就可以看到应用了。
 
 ## 开发资源
-JuBo是在Meteor(https://www.meteor.com) 的基础上开发的，Meteor的开发资源都可以应用在JuBo上。
+jubo-kit是在Meteor(https://www.meteor.com) 的基础上开发的，Meteor的开发资源都可以应用在jubo-kit上。
 
 ## 加入我们
 
