@@ -15,6 +15,6 @@ done
 
 cd "$ORIG_DIR"
 export JUBO_PATH="$WORK_DIR/devkit"
-JUBO="$WORK_DIR/lib/jubo.js"
+JUBO="$WORK_DIR/tools/main.js"
 exec "$WORK_DIR/devkit/meteor/dev_bundle/bin/node" "$JUBO" "$@" 
 
